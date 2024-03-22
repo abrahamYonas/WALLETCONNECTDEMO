@@ -3,8 +3,9 @@ import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
 import { connectWallet } from "./ethersServices/ConnectWallet";
+import { connectExistingContract } from "./ethersServices/connectExistingContract";
 import { deployContract } from "./ethersServices/DeployContract";
-import { evmOut } from "./dataObject";
+import data from "../artifacts/contracts/WEB3ETH.sol/SimpleMultisigWallet.json";
 
 function App() {
   const [providerMain, setProviderMain] = useState("");
@@ -53,19 +54,21 @@ function App() {
 
         <form
           onSubmit={async (e) => {
+            console.log({ e });
             e.preventDefault();
             const contractAddress = e.target[0].value;
             console.log("contractAddress", contractAddress);
-            const connectExistingContract = await connectExistingContract(
+            console.log("Signer", signerMain.address);
+            const connectedExistingContract = await connectExistingContract(
               contractAddress,
-              evmOut.abi,
+              data.abi,
               signerMain
             );
-            console.log("connectExistingContract", connectExistingContract);
+            console.log("connectedExistingContract", connectedExistingContract);
           }}
         >
           <input type='text' placeholder='Enter Contract Address' />
-          <button type='button'>Connect Existing Contract</button>
+          <button>Connect Existing Contract</button>
         </form>
         <p>
           Edit <code>src/App.jsx</code> and save to test HMR
